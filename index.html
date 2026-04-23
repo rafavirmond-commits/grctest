@@ -5596,7 +5596,7 @@ function Sidebar({page,setPage,collapsed,setCollapsed,currentUser,setCurrentUser
 }
 
 
-function Home({setPage,currentUser,assessmentInstances,setAssessmentInstances}){
+function Home({setPage,currentUser,assessmentInstances,setAssessmentInstances,addAudit}){
   var user=currentUser||{name:"User"};
   var role=(RDATA.adminRoles||[]).find(function(r){return r.id===user.role;})||{};
   var myAssessments=(assessmentInstances||[]).filter(function(a){return a.respondent&&(a.respondent.email===user.email||a.respondent.name===user.name);});
@@ -6323,7 +6323,7 @@ const [incidentInstances,setIncidentInstances]=useState(RDATA.incidents||[]);
 const [assessmentInstances,setAssessmentInstances]=useState(RDATA.assessmentSeeds||[]);
   const labels={home:"Home",dashboard:"Dashboard",assets:"Assets",procActivities:"Processing Activities",personalData:"Personal Data Inventory",myDashboard:"My Dashboard",complianceScorecard:"Compliance Scorecard",aiGovernance:"AI Governance",incidents:"Incident Management",securityPosture:"Security Posture",controlsLibrary:"Controls Library",approvals:"Approvals",workflowMgr:"Workflow Manager",assessmentMgr:"Assessment Manager",assessmentTemplates:"Assessment Templates",riskRegister:"Risk Register",dataFlows:"Data Flow Map",transfers:"Cross-Border Transfers",vendorsFull:"Vendors",vendorGaps:"Vendor Coverage Gaps",adminUsers:"Users & Roles",adminOrgs:"Managing Organizations",auditLog:"Audit Log",adminSettings:"Platform Settings",adminDataIO:"Data Import / Export",adminAutomation:"Automation Rules"};
   const renderPage=()=>{
-    if(page==="home")return h(Home,{setPage:setPage,currentUser:currentUser,assessmentInstances:assessmentInstances,setAssessmentInstances:setAssessmentInstances});
+    if(page==="home")return h(Home,{setPage:setPage,currentUser:currentUser,assessmentInstances:assessmentInstances,setAssessmentInstances:setAssessmentInstances,addAudit:addAudit});
     if(page==="dashboard")return h(Dashboard);
     if(page==="assets")return h(Assets,{items:assetInstances.filter(canSeeAsset),setItems:roleCrud("assets","edit")||roleCrud("assets","create")?setAssetInstances:null,canCreate:roleCrud("assets","create"),canEdit:roleCrud("assets","edit"),canDelete:roleCrud("assets","delete"),inScope});
     if(page==="procActivities")return h(ProcessingActivities,{items:paInstances.filter(canSeePA),setItems:roleCrud("procActivities","edit")||roleCrud("procActivities","create")?setPAInstances:null,canCreate:roleCrud("procActivities","create"),canEdit:roleCrud("procActivities","edit"),canDelete:roleCrud("procActivities","delete"),assetInstances,setAssetInstances,inScope});
@@ -6350,7 +6350,7 @@ const [assessmentInstances,setAssessmentInstances]=useState(RDATA.assessmentSeed
     if(page==="adminSettings")return h(AdminSettings);
     if(page==="adminDataIO")return h(AdminDataIO,{addAudit:addAudit});
     if(page==="adminAutomation")return h(AdminAutomation);
-    return h(Home,{setPage:setPage,currentUser:currentUser,assessmentInstances:assessmentInstances,setAssessmentInstances:setAssessmentInstances});
+    return h(Home,{setPage:setPage,currentUser:currentUser,assessmentInstances:assessmentInstances,setAssessmentInstances:setAssessmentInstances,addAudit:addAudit});
   };
     if(externalToken)return h(ExternalAccessGate,{token:externalToken,assessmentInstances:assessmentInstances,setAssessmentInstances:setAssessmentInstances});
   if(!loggedIn||!currentUserId)return h(LoginPage,{onLogin:function(uid){setCurrentUserId(uid);setLoggedIn(true);setPage("home");},users:adminUsers,roles:adminRoles});
